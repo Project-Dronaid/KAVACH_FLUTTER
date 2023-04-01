@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kavach_flutter_app/ANPR/anpr_home_page.dart';
+import 'package:kavach_flutter_app/FRS/frs_home_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     HomeWidget(),
     AnprHomePage(),
-    FrsWidget(),
+    CybersecurityPage(),
   ];
 
   @override
@@ -59,20 +60,3 @@ class HomeWidget extends StatelessWidget {
   }
 }
 
-class AnprWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("ANPR"),
-    );
-  }
-}
-
-class FrsWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("FRS"),
-    );
-  }
-}
