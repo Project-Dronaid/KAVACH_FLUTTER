@@ -18,7 +18,7 @@ class CybersecurityPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => KavachPage()));
+                    MaterialPageRoute(builder: (context) => KavachPage("Harsh", DateTime.now())));
               },
               child: Text('Go to FRS'),
             ),
