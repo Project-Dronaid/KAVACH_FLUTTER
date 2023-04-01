@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kavach_flutter_app/home_page.dart';
+import 'package:kavach_flutter_app/splashScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: splashScreen(),
     );
   }
 }
