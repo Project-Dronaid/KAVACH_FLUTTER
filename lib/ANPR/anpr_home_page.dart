@@ -1,8 +1,11 @@
+// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:kavach_flutter_app/ANPR/car_detail.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+final player = AudioPlayer();
 late QuerySnapshot x;
 Future<QuerySnapshot> fetchDataFromFirestore(String collectionName) async {
   CollectionReference collectionRef =
@@ -92,10 +95,8 @@ class _AnprHomePageState extends State<AnprHomePage> {
                     if (flaggedVehicles.length > index)
                       print('flagged' + flaggedVehicles[index]);
                     print(detection['ownerName'].toString());
-                    if(flaggedVehicles.contains(
-                        snapshot.data!.docs[index].get('name').toString())){
-                          
-                        }
+                    if (flaggedVehicles.contains(
+                        snapshot.data!.docs[index].get('name').toString())) {}
                     return Container(
                       color: flaggedVehicles.contains(
                               snapshot.data!.docs[index].get('name').toString())
@@ -157,6 +158,10 @@ class _AnprHomePageState extends State<AnprHomePage> {
     );
   }
 
+  void playSound() async {
+    await player.play(AssetSource('alarm.mp3'));
+  }
+
   void _showAddFlaggedVehicleDialog() {
     String newFlaggedVehicleNumber = '';
     showDialog(
@@ -188,7 +193,10 @@ class _AnprHomePageState extends State<AnprHomePage> {
                 for (var i in detections) {
                   if (i['ownerName'] == newFlaggedVehicleNumber) x = true;
                 }
-                if (x) Vibration.vibrate(duration: 2000);
+                if (x) {
+                  Vibration.vibrate(duration: 2000);
+                  playSound();
+                }
               },
             ),
           ],

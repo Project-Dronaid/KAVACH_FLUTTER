@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kavach_flutter_app/harsh/frs_detail_page.dart';
 import 'package:kavach_flutter_app/ANPR/anpr_home_page.dart';
 import 'package:kavach_flutter_app/FRS/frs_home_page.dart';
 
@@ -21,6 +22,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("KAVACH"),
+        actions: [
+          GestureDetector(
+            child: Icon(Icons.pause),
+            onTap: () {
+              player.stop();
+            },
+          )
+        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -60,3 +69,19 @@ class HomeWidget extends StatelessWidget {
   }
 }
 
+class AnprWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("ANPR"),
+    );
+  }
+}
+
+class FrsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return FRSDetail("Sandeep");
+    return FRSDetail("Nirvana");
+  }
+}
