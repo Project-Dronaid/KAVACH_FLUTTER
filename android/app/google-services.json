@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "224147857830",
+    "firebase_url": "https://kavach-dcd71-default-rtdb.firebaseio.com",
+    "project_id": "kavach-dcd71",
+    "storage_bucket": "kavach-dcd71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224147857830:android:e29d020ac362a9e1566f67",
+        "android_client_info": {
+          "package_name": "com.example.kavach_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224147857830-28ugvoung2ljn4mgajfb25bibok1iplp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzKUo7fxCCbKhSerm_2h6It4KAEyV8nTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224147857830-28ugvoung2ljn4mgajfb25bibok1iplp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

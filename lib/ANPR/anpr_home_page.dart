@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kavach_flutter_app/ANPR/car_detail.dart';
 import 'package:vibration/vibration.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+late QuerySnapshot x;
+Future<QuerySnapshot> fetchDataFromFirestore(String collectionName) async {
+  CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection(collectionName);
+  QuerySnapshot querySnapshot = await collectionRef.get();
+  x = querySnapshot;
+  return querySnapshot;
+}
 
 class AnprHomePage extends StatefulWidget {
   @override
@@ -58,57 +68,84 @@ class _AnprHomePageState extends State<AnprHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: 800,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: detections.length,
-            itemBuilder: (BuildContext context, int index) {
-              final detection = detections[index];
-              return Container(
-                color:
-                    flaggedVehicles.contains(detection['carNumber'].toString())
-                        ? Colors.red
-                        : Colors.white,
-                child: ListTile(
-                  title: Text(
-                      "Number of cars detected: ${detection['carNumber']}"),
-                  subtitle: Text("Time detected: ${DateTime.now().toString()}"),
-                  trailing: IconButton(
-                    icon: Icon(Icons.chevron_right),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CarDetailsPage(
-                            carNumber: "ABC123",
-                            carDetailsList: [
-                              CarDetails(
-                                carNumber: "ABC123",
-                                ownerName: "John Doe",
-                                carModel: "Toyota Corolla",
-                                carColor: "Blue",
-                                carType: "Sedan",
+      body: FutureBuilder<QuerySnapshot>(
+        future: fetchDataFromFirestore('Flagged Database'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Container(
+                height: 800,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var z = {
+                      'carNumber': "ABC123",
+                      'ownerName': '${snapshot.data!.docs[index].get('name')}',
+                      'carModel': "Toyota Corolla",
+                      'carColor': "Blue",
+                      'carType': "Sedan",
+                    };
+                    detections.add(z);
+
+                    final detection = detections[index];
+                    if (flaggedVehicles.length > index)
+                      print('flagged' + flaggedVehicles[index]);
+                    print(detection['ownerName'].toString());
+                    if(flaggedVehicles.contains(
+                        snapshot.data!.docs[index].get('name').toString())){
+                          
+                        }
+                    return Container(
+                      color: flaggedVehicles.contains(
+                              snapshot.data!.docs[index].get('name').toString())
+                          ? Colors.red
+                          : Colors.white,
+                      child: ListTile(
+                        title: Text(
+                            "Number of cars detected: ${snapshot.data!.docs[index].get('name')}"),
+                        subtitle:
+                            Text("Time detected: ${DateTime.now().toString()}"),
+                        trailing: IconButton(
+                          icon: Icon(Icons.chevron_right),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CarDetailsPage(
+                                  carNumber: "ABC123",
+                                  carDetailsList: [
+                                    CarDetails(
+                                      carNumber: "ABC123",
+                                      ownerName: "John Doe",
+                                      carModel: "Toyota Corolla",
+                                      carColor: "Blue",
+                                      carType: "Sedan",
+                                    ),
+                                    CarDetails(
+                                      carNumber: "XYZ456",
+                                      ownerName: "Jane Smith",
+                                      carModel: "Honda Civic",
+                                      carColor: "Red",
+                                      carType: "Coupe",
+                                    ),
+                                  ],
+                                ),
                               ),
-                              CarDetails(
-                                carNumber: "XYZ456",
-                                ownerName: "Jane Smith",
-                                carModel: "Honda Civic",
-                                carColor: "Red",
-                                carType: "Coupe",
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+            );
+          } else
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -149,7 +186,7 @@ class _AnprHomePageState extends State<AnprHomePage> {
                 Navigator.of(context).pop();
                 bool x = false;
                 for (var i in detections) {
-                  if (i['carNumber'] == newFlaggedVehicleNumber) x = true;
+                  if (i['ownerName'] == newFlaggedVehicleNumber) x = true;
                 }
                 if (x) Vibration.vibrate(duration: 2000);
               },
