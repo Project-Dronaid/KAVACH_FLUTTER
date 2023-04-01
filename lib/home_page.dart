@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kavach_flutter_app/harsh/frs_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -70,8 +71,7 @@ class AnprWidget extends StatelessWidget {
 class FrsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("FRS"),
-    );
+    // return FRSDetail("Sandeep");
+    return FRSDetail("Nirvana");
   }
 }
