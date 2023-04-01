@@ -61,7 +61,12 @@ class CustomAppBar  extends StatelessWidget implements PreferredSizeWidget{
         child: Container(
           child: Row(
             children: [
-              SvgPicture.asset('assets/svg/Rectangle.svg', height: height*0.1,),
+              DropShadow(
+                  child: SvgPicture.asset('assets/svg/Rectangle.svg', height: height*0.07,),
+                offset: Offset(0.0,0.7),
+                spread: 0.7,
+                blurRadius: 1,
+              ),
               DropShadow(
                 child: Text("WELCOME TO KAVACH", style: GoogleFonts.chakraPetch(color: Colors.white, fontSize: height*0.025, fontWeight: FontWeight.normal),),
                 offset: Offset(0.0,0.7),
