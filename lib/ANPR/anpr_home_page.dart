@@ -1,6 +1,8 @@
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kavach_flutter_app/ANPR/car_detail.dart';
 import 'package:vibration/vibration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,11 +25,18 @@ class AnprHomePage extends StatefulWidget {
 class _AnprHomePageState extends State<AnprHomePage> {
   final List detections = [
     {
-      'carNumber': "ABC123",
+      'carNumber': "ABC121",
       'ownerName': "John Doe",
       'carModel': "Toyota Corolla",
       'carColor': "Blue",
       'carType': "Sedan",
+    },
+    {
+      'carNumber': "ABC122",
+      'ownerName': "Sheldon",
+      'carModel': "Toyota Innova",
+      'carColor': "Black",
+      'carType': "SUV",
     },
     {
       'carNumber': "ABC123",
@@ -37,28 +46,21 @@ class _AnprHomePageState extends State<AnprHomePage> {
       'carType': "Sedan",
     },
     {
-      'carNumber': "ABC123",
+      'carNumber': "ABC124",
       'ownerName': "John Doe",
       'carModel': "Toyota Corolla",
       'carColor': "Blue",
       'carType': "Sedan",
     },
     {
-      'carNumber': "ABC123",
+      'carNumber': "ABC125",
       'ownerName': "John Doe",
       'carModel': "Toyota Corolla",
       'carColor': "Blue",
       'carType': "Sedan",
     },
     {
-      'carNumber': "ABC123",
-      'ownerName': "John Doe",
-      'carModel': "Toyota Corolla",
-      'carColor': "Blue",
-      'carType': "Sedan",
-    },
-    {
-      'carNumber': "ABC123",
+      'carNumber': "ABC126",
       'ownerName': "John Doe",
       'carModel': "Toyota Corolla",
       'carColor': "Blue",
@@ -70,6 +72,10 @@ class _AnprHomePageState extends State<AnprHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    var width= MediaQuery.of(context).size.width;
+    var height=MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: FutureBuilder<QuerySnapshot>(
         future: fetchDataFromFirestore('Flagged Database'),
@@ -148,12 +154,30 @@ class _AnprHomePageState extends State<AnprHomePage> {
             );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddFlaggedVehicleDialog();
-        },
-        tooltip: 'Add Flagged Vehicle',
-        child: Icon(Icons.add),
+      floatingActionButton: SizedBox(
+        width: width*0.35,
+        child: FloatingActionButton(
+          backgroundColor: Colors.redAccent,
+          onPressed: () {
+            _showAddFlaggedVehicleDialog();
+          },
+          tooltip: 'Add Flagged Vehicle',
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/svg/alert.svg', width: width*0.06, color: Colors.white,),
+              SizedBox(
+                width: width*0.01,
+              ),
+              Text("Flag Vehicle")
+            ],
+          ),
+
+          shape:  RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          hoverColor: Colors.red,
+        ),
       ),
     );
   }
