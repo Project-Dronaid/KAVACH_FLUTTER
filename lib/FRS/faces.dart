@@ -36,6 +36,7 @@ class _KavachPageState extends State<KavachPage> {
   ];
 
   List<String> flaggedVehicles = [];
+  Map<String, int> mp  ={};
   List<int> vis = [];
   @override
   Widget build(BuildContext context) {
@@ -72,41 +73,41 @@ class _KavachPageState extends State<KavachPage> {
           print(llist);
           if (snapshot.hasData) {
             return Container(
-              height: 800,
-              child: SingleChildScrollView(
-                child: Container(
-                  // color: Color(0xff525252),
-                  color: Colors.black,
-                  height: height,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 15,
-                        ),
-                        child: Container(
-                          width: width,
-                          height: height * 0.25,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/fcrbg.png"),
-                              fit: BoxFit.fill,
-                            ),
+              height: height,
+              child: Container(
+                // color: Color(0xff525252),
+                color: Colors.black,
+                height: height,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 25,
+                        vertical: 15,
+                      ),
+                      child: Container(
+                        width: width,
+                        height: height * 0.25,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/fcrbg.png"),
+                            fit: BoxFit.fill,
                           ),
-                          child: Center(
-                            child: Text(
-                              "DETECTED    FACES",
-                              style: GoogleFonts.chakraPetch(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 33,
-                                color: Colors.white,
-                              ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "DETECTED    FACES",
+                            style: GoogleFonts.chakraPetch(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 33,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 25,
@@ -114,13 +115,18 @@ class _KavachPageState extends State<KavachPage> {
                           ),
                           child: ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: ClampingScrollPhysics(),
                             itemCount: llist.length,
                             itemBuilder: (BuildContext context, int index) {
+                              index = llist.length - 1 - index;
                               // final detection = widget.detections[index];
                               if (flaggedVehicles.contains(llist[index])) {
                                 flaggedVehicles.add(llist[index]);
                               }
+                              if(mp.containsKey(llist[index]) && mp[llist[index]]==0) {
+                                playSound();
+                                mp[llist[index]]=1;
+                              } 
                               //
 
                               // if (vis.length < flaggedVehicles.length) {
@@ -198,8 +204,8 @@ class _KavachPageState extends State<KavachPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -213,7 +219,7 @@ class _KavachPageState extends State<KavachPage> {
         onPressed: () {
           _showAddFlaggedVehicleDialog();
         },
-        tooltip: 'Add Flagged Vehicle',
+        tooltip: 'Add Flagged Persons',
         child: Icon(Icons.add),
       ),
     );
@@ -229,9 +235,9 @@ class _KavachPageState extends State<KavachPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Flagged Vehicle'),
+          title: Text('Add Flagged Persons'),
           content: TextFormField(
-            decoration: InputDecoration(hintText: 'Enter vehicle number'),
+            decoration: InputDecoration(hintText: 'Enter Name'),
             onChanged: (value) {
               newFlaggedVehicleNumber = value;
             },
@@ -248,18 +254,19 @@ class _KavachPageState extends State<KavachPage> {
               onPressed: () {
                 setState(() {
                   flaggedVehicles.add(newFlaggedVehicleNumber);
+                  mp[newFlaggedVehicleNumber] = 0;
                 });
 
                 Navigator.of(context).pop();
-                bool x = false;
-                for (var i in detections) {
-                  print(i['name']);
-                  if (i['name'] == newFlaggedVehicleNumber) x = true;
-                }
-                if (x) {
-                  Vibration.vibrate(duration: 2000);
-                  playSound();
-                }
+                // bool x = false;
+                // for (var i in detections) {
+                //   print(i['name']);
+                //   if (i['name'] == newFlaggedVehicleNumber) x = true;
+                // }
+                // if (x) {
+                //   Vibration.vibrate(duration: 2000);
+                //   playSound();
+                // }
               },
             ),
           ],

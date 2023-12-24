@@ -22,14 +22,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("KAVACH"),
-        actions: [
-          GestureDetector(
-            child: Icon(Icons.pause),
-            onTap: () {
-              player.stop();
-            },
-          )
-        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
